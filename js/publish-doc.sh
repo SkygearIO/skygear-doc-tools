@@ -1,8 +1,15 @@
+set -e
 PWD=$1
 DOCS_AWS_BUCKET=$2
 DOCS_PREFIX=$3
 DOCS_AWS_DISTRIBUTION=$4
-DOCKER_RUN="docker run --rm -i -v $1:/usr/src/app -w /usr/src/app skygeario/skygear-nodedev /bin/bash -l -c "
+WITH_DOCKER=$5
+if [ "$WITH_DOCKER" == "WITH_DOCKER" ]; then
+  DOCKER_RUN="docker run --rm -i -v $1:/usr/src/app -w /usr/src/app skygeario/skygear-nodedev /bin/bash -l -c "
+else
+  DOCKER_RUN="/bin/bash -c "
+  cd $PWD
+fi
 $DOCKER_RUN "rm -rfv esdoc"
 $DOCKER_RUN "npm run doc"
 VERSION=`$DOCKER_RUN "git describe --always"`
