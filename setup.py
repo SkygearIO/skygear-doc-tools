@@ -12,6 +12,7 @@ setup(
     packages=find_packages(),
     scripts=['bin/create-docker-image',
              'bin/generate-js-doc',
+             'bin/generate-ios-doc',
              'bin/generate-android-doc',
              'bin/publish-doc'],
 )
