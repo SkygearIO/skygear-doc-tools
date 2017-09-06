@@ -1,0 +1,25 @@
+#!/usr/bin/env python
+# vim: set ft=python:
+import click
+import os
+from doc_tools import *
+
+
+@click.command()
+@click.option('--platform', help='platform', required=True)
+@click.option('--pwd', help='project directory', required=True)
+@click.option('--doc-dir', help='doc directory', required=True)
+@click.option('--bucket', help='S3 bucket', required=True)
+@click.option('--prefix', help='Prefix', required=True)
+@click.option('--version', help='Version', required=True)
+@click.option('--distribution-id', help='Distribution ID', required=True)
+@click.option('--docker/--no-docker', help='run with docker', default=False)
+def publish_doc(platform, pwd, doc_dir, bucket, prefix, version, distribution_id, docker):
+    os.chdir(pwd)
+    s3_path = 's3://%s%s/%s' % (bucket, prefix, version)
+    run_command(platform, pwd, 'aws s3 sync %s %s --delete' % (doc_dir, s3_path), docker)
+    run_command(platform, pwd, 'aws cloudfront create-invalidation --distribution-id %s --paths %s/%s/*' % (distribution_id, prefix, version), docker)
+
+
+if __name__ == '__main__':
+    publish_doc()

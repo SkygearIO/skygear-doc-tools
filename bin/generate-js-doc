@@ -1,0 +1,14 @@
+#!/usr/bin/env python
+# vim: set ft=python:
+import click
+from doc_tools import *
+
+@click.command()
+@click.option('--pwd', help='project directory')
+@click.option('--docker/--no-docker', help='run with docker', default=False)
+def generate_js_doc(pwd, docker):
+    os.chdir(pwd)
+    run_command('js', pwd, 'npm run doc', docker)
+
+if __name__ == '__main__':
+    generate_js_doc()

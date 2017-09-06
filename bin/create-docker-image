@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+# vim: set ft=python:
+import click
+import os
+import pkg_resources
+import doc_tools
+
+
+@click.command()
+@click.option('--platform')
+def create_docker_image(platform):
+    if platform == 'js':
+        path = os.path.join(os.path.dirname(os.path.abspath(doc_tools.__file__)), 'docker_images', 'nodedev') 
+        image_name = '%s/%s/%s' % ('skygeario', 'skygear-nodedev', 'latest')
+        os.chdir(path)
+        os.system('docker build -t %s . ' % (image_name))
+    else:
+        raise Exception('%s not supported.' % (platform))        
+
+
+if __name__ == '__main__':
+    create_docker_image()
