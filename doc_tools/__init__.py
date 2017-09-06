@@ -19,7 +19,7 @@ def get_run_by_platform(platform, pwd, with_docker):
         return _get_no_docker_run()
 
 def run_command(platform, pwd, cmd, with_docker):
-    run = get_run_by_platform('js', pwd, with_docker)
+    run = get_run_by_platform(platform, pwd, with_docker)
     line = run + '\"%s\"' % (cmd)
     print('Running: ' + line)
     os.system(line)

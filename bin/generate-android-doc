@@ -1,3 +1,18 @@
 #!/usr/bin/env python
 # vim: set ft=python:
 import click
+from doc_tools import *
+
+@click.command()
+@click.option('--pwd', help='project directory', required=True)
+@click.option('--src-dir', help='source directory', required=True)
+@click.option('--dst-dir', help='destination directory', required=True)
+@click.option('--package', help='package name', required=True)
+@click.option('--docker/--no-docker', help='run with docker', default=False)
+def generate_android_doc(pwd, src_dir, dst_dir, package, docker):
+    os.chdir(pwd)
+    #javadoc -d ./doc -sourcepath ./chat/src/main/java  io.skygear.plugins.chat
+    run_command('android', pwd, 'javadoc -d %s -sourcepath %s %s' % (dst_dir, src_dir, package), docker)
+
+if __name__ == '__main__':
+    generate_android_doc()

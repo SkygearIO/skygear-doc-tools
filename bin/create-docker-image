@@ -7,11 +7,15 @@ import doc_tools
 
 
 @click.command()
-@click.option('--platform')
+@click.option('--platform', required=True)
 def create_docker_image(platform):
-    if platform == 'js':
-        path = os.path.join(os.path.dirname(os.path.abspath(doc_tools.__file__)), 'docker_images', 'nodedev') 
-        image_name = '%s/%s/%s' % ('skygeario', 'skygear-nodedev', 'latest')
+    if platform == 'js' or platform == 'android':
+        if platform == 'js':
+            image = 'nodedev'
+        elif platform == 'android':
+            image = 'androiddev'
+        path = os.path.join(os.path.dirname(os.path.abspath(doc_tools.__file__)), 'docker_images', image) 
+        image_name = '%s/skygear-%s/%s' % ('skygeario', image, 'latest')
         os.chdir(path)
         os.system('docker build -t %s . ' % (image_name))
     else:
