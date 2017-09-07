@@ -1,6 +1,8 @@
 # skygear-doc-tools
+skygear-doc-tools is an utility to generate and upload documentation.
+
 ## Installation
-`sudo pip install https://github.com/SkygearIO/skygear-doc-tools/archive/master.zip`
+`sudo pip install git+https://github.com/SkygearIO/skygear-doc-tools.git@master`
 
 ## Usage
 ### Create Docker Image (Android & JS) Only
