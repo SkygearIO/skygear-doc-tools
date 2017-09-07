@@ -5,10 +5,9 @@ from doc_tools import *
 
 @click.command()
 @click.option('--pwd', help='project directory', required=True)
-@click.option('--prefix', help='github prefix', required=True)
-def generate_ios_doc(pwd, prefix):
+def generate_ios_doc(pwd):
     os.chdir(pwd)
-    run_command('ios', pwd, 'jazzy --github-file-prefix %s' % (prefix), False)
+    run_command('ios', pwd, 'jazzy', False)
 
 if __name__ == '__main__':
     generate_ios_doc()
