@@ -1,0 +1,36 @@
+#!/usr/bin/env python
+# vim: set ft=python:
+import click
+import glob
+import sphinx
+import sphinx.apidoc
+from doc_tools import *
+from os import path
+from shutil import copyfile, rmtree
+
+@click.command()
+@click.option('--pwd', help='doc directory', required=True)
+@click.option('--name', help='name', required=True)
+@click.option('--author', help='author', required=True)
+@click.option('--version', help='version', required=True)
+def generate_python_doc(pwd, name, author, version):
+    os.chdir(pwd)
+    temp_dir = 'rst'
+    if path.exists(temp_dir) and path.isdir(temp_dir):
+        rmtree(temp_dir)
+    sphinx.apidoc.OPTIONS = ['members']
+    sphinx.apidoc.main([path.join('..'),
+                        '-H', name,
+                        '-A', author,
+                        '-V', version,
+                        '-R', version,
+                        '-o', temp_dir,
+                        path.join('..', 'skygear')])
+    for rst in glob.glob(r'*.rst') + ['conf.py']:
+        print(rst)
+        copyfile(rst, path.join(temp_dir, rst))
+    sphinx.main(['', temp_dir, '_build'])
+    rmtree(temp_dir)
+
+if __name__ == '__main__':
+    generate_python_doc()
